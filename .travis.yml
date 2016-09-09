@@ -27,5 +27,3 @@ before_script:
 
 install:
     - ./.travis/install.sh
-    - npm install
-    - ./bin/microcrawler config init
