@@ -31,5 +31,9 @@ defmodule Microcrawler do
 
     IO.puts "Starting AMQP"
     Task.start(fn -> AMQP.Queue.subscribe(chan, "collector", handler) end)
+
+    receive do
+    _ -> :ok
+    end
   end
 end
