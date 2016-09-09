@@ -29,8 +29,11 @@ defmodule Microcrawler.Mixfile do
     [
       {:amqp_client, git: "https://github.com/jbrisbin/amqp_client.git", override: true},
       {:amqp, "~> 0.1.4"},
+      {:apex, "~>0.5.2"},
       {:cberl, git: "https://github.com/chitika/cberl", override: true},
       {:dialyxir, "~> 0.3.5", only: [:dev]},
+      {:execjs, "~> 1.1.3"},
+      {:poison, "~> 1.5"},
       {:tirexs, "~> 0.8.8"}
     ]
   end
