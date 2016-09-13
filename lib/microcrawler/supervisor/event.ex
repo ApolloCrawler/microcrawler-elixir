@@ -48,16 +48,6 @@ defmodule Microcrawler.Supervisor.Event do
             amqp_websocket_bridge
         ]
 
-#        amqp_uri = config["amqp"]["uri"]
-#
-#        # Connect to AMQP
-#        {:ok, conn} = AMQP.Connection.open(amqp_uri)
-#        {:ok, chan} = AMQP.Channel.open(conn)
-#
-#        handler = fn(payload, _meta) ->
-#                IO.puts("Received: #{payload}")
-#        end
-
         supervise(children, strategy: :one_for_one)
     end
 
