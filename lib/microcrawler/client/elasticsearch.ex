@@ -1,9 +1,9 @@
-defmodule Microcrawler.ElasticsearchClient do
+defmodule Microcrawler.Client.Elasticsearch do
     require Logger
 
     @server __MODULE__
 
-    def start_link do
+    def start_link() do
         Logger.info('Starting Elasticsearch Client')
 
         GenEvent.start_link [{:name, @server}]

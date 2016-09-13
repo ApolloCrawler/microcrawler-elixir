@@ -1,9 +1,9 @@
-defmodule Microcrawler.AmqpClient do
+defmodule Microcrawler.Client.Amqp do
     require Logger
 
     @server __MODULE__
 
-    def start_link do
+    def start_link() do
         Logger.info('Starting AMQP Client')
 
         GenEvent.start_link [{:name, @server}]

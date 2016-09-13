@@ -26,10 +26,28 @@ defmodule Microcrawler.EventSupervisor do
 
     def init(:ok) do
         children = [
-            worker(Microcrawler.AmqpClient, []),
-            worker(Microcrawler.CouchbaseClient, []),
-            worker(Microcrawler.ElasticsearchClient, [])
+            worker(Microcrawler.Client.Amqp, []),
+            worker(Microcrawler.Client.Couchbase, []),
+            worker(Microcrawler.Client.Elasticsearch, [])
         ]
+
+#        config_path = Path.join([System.user_home(), '.microcrawler', 'config.json'])
+#        res = case File.read(config_path) do
+#            {:ok, body}      -> run(parse_config(body))
+#            {:error, reason} -> Apex.ap reason
+#        end
+#
+#        Poison.Parser.parse!(data)
+#
+#        amqp_uri = config["amqp"]["uri"]
+#
+#        # Connect to AMQP
+#        {:ok, conn} = AMQP.Connection.open(amqp_uri)
+#        {:ok, chan} = AMQP.Channel.open(conn)
+#
+#        handler = fn(payload, _meta) ->
+#                IO.puts("Received: #{payload}")
+#        end
 
         supervise(children, strategy: :one_for_one)
     end
