@@ -31,9 +31,11 @@ defmodule Microcrawler.EventSupervisor do
 #            worker(Microcrawler.Client.Elasticsearch, [])
 #        ]
 
+        coordinator = worker(Microcrawler.Coordinator, [[], [name: Coordinator]])
+        collector = worker(Microcrawler.Collector, [[coordinator], [name: Collector]])
         children = [
-            worker(Microcrawler.Coordinator, [[], [name: Coordinator]]),
-            worker(Microcrawler.Collector, [[], [name: Collector]])
+            coordinator,
+            collector
         ]
 
 #        config_path = Path.join([System.user_home(), '.microcrawler', 'config.json'])
