@@ -33,11 +33,9 @@ defmodule Microcrawler.EventSupervisor do
 
 #        config_path = Path.join([System.user_home(), '.microcrawler', 'config.json'])
 #        res = case File.read(config_path) do
-#            {:ok, body}      -> run(parse_config(body))
+#            {:ok, body}      -> Poison.Parser.parse!(data)
 #            {:error, reason} -> Apex.ap reason
 #        end
-#
-#        config = Poison.Parser.parse!(data)
 
         coordinator = worker(Microcrawler.Coordinator, [[], [name: Coordinator]])
         collector = worker(Microcrawler.Collector, [[coordinator], [name: Collector]])
