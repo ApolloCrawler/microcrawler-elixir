@@ -31,8 +31,8 @@ defmodule Microcrawler.EventSupervisor do
             {:error, reason} -> Apex.ap reason
         end
 
-        coordinator = worker(Microcrawler.Coordinator, [[config: config], [name: Coordinator]])
-        collector = worker(Microcrawler.Collector, [[config: config, coordinator: coordinator], [name: Collector]])
+        coordinator = worker(Microcrawler.Coordinator, [[], [config: config, name: Coordinator]])
+        collector = worker(Microcrawler.Collector, [[], [config: config, name: Collector]])
         children = [
             coordinator,
             collector
