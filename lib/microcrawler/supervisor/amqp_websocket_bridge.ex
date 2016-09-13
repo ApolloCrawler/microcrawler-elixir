@@ -11,7 +11,7 @@ defmodule Microcrawler.Supervisor.AmqpWebsocketBridge do
     end
 
     def init(:ok) do
-        amqp_websocket_bridge = worker(Microcrawler.Worker.AmqpWebsocketBridge, [[], [name: AmqpWebsocketBridge]])
+        amqp_websocket_bridge = worker(Microcrawler.Worker.AmqpWebsocketBridge, [[], [name: Microcrawler.Worker.AmqpWebsocketBridge]])
 
         children = [
             amqp_websocket_bridge

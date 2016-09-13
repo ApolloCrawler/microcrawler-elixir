@@ -11,7 +11,7 @@ defmodule Microcrawler.Supervisor.Coordinator do
     end
 
     def init(:ok) do
-        coordinator = worker(Microcrawler.Worker.Coordinator, [[], [name: Coordinator]])
+        coordinator = worker(Microcrawler.Worker.Coordinator, [[], [name: Microcrawler.Worker.Coordinator]])
 
         children = [
             coordinator

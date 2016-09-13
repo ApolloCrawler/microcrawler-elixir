@@ -11,7 +11,7 @@ defmodule Microcrawler.Supervisor.Collector do
     end
 
     def init(:ok) do
-        collector = worker(Microcrawler.Worker.Collector, [[], [name: Collector]])
+        collector = worker(Microcrawler.Worker.Collector, [[], [name: Microcrawler.Worker.Collector]])
 
         children = [
             collector
