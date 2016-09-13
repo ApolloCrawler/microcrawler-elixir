@@ -1,9 +1,12 @@
 defmodule Microcrawler.Supervisor.Event do
+    require Logger
     use Supervisor
 
     @server __MODULE__
 
     def start_link do
+        Logger.info("Starting #{__MODULE__}")
+
         Supervisor.start_link(@server, :ok, [name: @server])
     end
 
@@ -14,9 +17,9 @@ defmodule Microcrawler.Supervisor.Event do
             {:error, reason} -> Apex.ap reason
         end
 
-        coordinator = worker(Microcrawler.Worker.Coordinator, [[], [config: config, name: Coordinator]])
-        collector = worker(Microcrawler.Worker.Collector, [[], [config: config, name: Collector]])
-        amqp_websocket_bridge = worker(Microcrawler.Worker.AmqpWebsocketBridge, [[], [config: config, name: AmqpWebsocketBridge]])
+        coordinator = worker(Microcrawler.Supervisor.Coordinator, [])
+        collector = worker(Microcrawler.Supervisor.Collector, [])
+        amqp_websocket_bridge = worker(Microcrawler.Supervisor.AmqpWebsocketBridge, [])
 
         children = [
             coordinator,
