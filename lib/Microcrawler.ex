@@ -25,10 +25,15 @@ defmodule Microcrawler.EventSupervisor do
     end
 
     def init(:ok) do
+#        children = [
+#            worker(Microcrawler.Client.Amqp, []),
+#            worker(Microcrawler.Client.Couchbase, []),
+#            worker(Microcrawler.Client.Elasticsearch, [])
+#        ]
+
         children = [
-            worker(Microcrawler.Client.Amqp, []),
-            worker(Microcrawler.Client.Couchbase, []),
-            worker(Microcrawler.Client.Elasticsearch, [])
+            worker(Microcrawler.Coordinator, [[], [name: Coordinator]]),
+            worker(Microcrawler.Collector, [[], [name: Collector]])
         ]
 
 #        config_path = Path.join([System.user_home(), '.microcrawler', 'config.json'])
