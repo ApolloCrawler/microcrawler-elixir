@@ -3,7 +3,7 @@ defmodule Microcrawler.Collector do
     use GenServer
 
     def start_link(state, opts \\ []) do
-        Logger.info('Starting Collector')
+        Logger.info("Starting #{__MODULE__}")
 
         GenServer.start_link(__MODULE__, state, opts)
     end
