@@ -12,9 +12,13 @@ defmodule Microcrawler.Supervisor.Coordinator do
 
     def init(:ok) do
         coordinator = worker(Microcrawler.Worker.Coordinator, [[], [name: Microcrawler.Worker.Coordinator]])
+        amqp = worker(Microcrawler.Client.Amqp, [])
+        couchbase = worker(Microcrawler.Client.Couchbase, [])
 
         children = [
-            coordinator
+            coordinator,
+            amqp,
+            couchbase
         ]
 
         supervise(children, strategy: :one_for_one)
