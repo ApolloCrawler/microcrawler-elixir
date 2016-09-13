@@ -1,4 +1,4 @@
-defmodule Microcrawler.Coordinator do
+defmodule Microcrawler.Worker.AmqpWebsocketBridge do
     require Logger
     use GenServer
 

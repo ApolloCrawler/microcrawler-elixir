@@ -1,4 +1,4 @@
-defmodule Microcrawler.Collector do
+defmodule Microcrawler.Worker.Collector do
     require Logger
     use GenServer
 
