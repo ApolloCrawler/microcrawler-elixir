@@ -19,8 +19,10 @@ defmodule Microcrawler.Mixfile do
   #
   # Type `mix help compile.app` for more information
   def application do
-    [mod: {Microcrawler, []},
-     applications: [:logger, :crypto]]
+    [
+        mod: {Microcrawler, []},
+        applications: [:logger, :crypto]
+    ]
   end
 
   # Specifies your project dependencies
