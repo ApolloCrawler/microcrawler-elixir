@@ -17,9 +17,9 @@ defmodule Microcrawler.Supervisor.Event do
             {:error, reason} -> Apex.ap reason
         end
 
-        coordinator = supervisor(Microcrawler.Supervisor.Coordinator, [], [config: config])
-        collector = supervisor(Microcrawler.Supervisor.Collector, [], [config: config])
-        amqp_websocket_bridge = supervisor(Microcrawler.Supervisor.AmqpWebsocketBridge, [], [config: config])
+        coordinator = supervisor(Microcrawler.Supervisor.Coordinator, [config: config], [])
+        collector = supervisor(Microcrawler.Supervisor.Collector, [config: config], [])
+        amqp_websocket_bridge = supervisor(Microcrawler.Supervisor.AmqpWebsocketBridge, [config: config], [])
 
         children = [
             coordinator,
