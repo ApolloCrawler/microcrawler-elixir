@@ -11,15 +11,33 @@ defmodule Microcrawler.Supervisor.Event do
     end
 
     def init(:ok) do
+        # Construct config file path
         config_path = Path.join([System.user_home(), '.microcrawler', 'config.json'])
-        config = case File.read(config_path) do
-            {:ok, body}      -> Poison.Parser.parse!(body)
-            {:error, reason} -> Apex.ap reason
+
+        # Try to read config file
+        res = case File.read(config_path) do
+            # Return parsed file
+            {:ok, body}      -> parse_config(body)
+
+            # Return error
+            {:error, reason} -> {:error, reason}
         end
 
-        coordinator = supervisor(Microcrawler.Supervisor.Coordinator, [config: config], [])
-        collector = supervisor(Microcrawler.Supervisor.Collector, [config: config], [])
-        amqp_websocket_bridge = supervisor(Microcrawler.Supervisor.AmqpWebsocketBridge, [config: config], [])
+        # Based on result decide if to run supervisor or return error
+        case res do
+            {:ok, _config} -> run(res)
+            {:error, reason} -> error(reason)
+        end
+    end
+
+    def parse_config(body) do
+        {:ok, config: Poison.Parser.parse!(body)}
+    end
+
+    def run(_args) do
+        coordinator = supervisor(Microcrawler.Supervisor.Coordinator, [nil], [])
+        collector = supervisor(Microcrawler.Supervisor.Collector, [{nil}], [])
+        amqp_websocket_bridge = supervisor(Microcrawler.Supervisor.AmqpWebsocketBridge, [nil], [])
 
         children = [
             coordinator,
@@ -38,5 +56,12 @@ defmodule Microcrawler.Supervisor.Event do
 #        end
 
         supervise(children, strategy: :one_for_one)
+    end
+
+    def error(reason) do
+        Apex.ap(reason)
+
+        # TODO: Properly fail-early somehow
+        {:error, reason}
     end
 end
