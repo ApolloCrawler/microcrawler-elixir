@@ -33,9 +33,11 @@ defmodule Microcrawler.EventSupervisor do
 
         coordinator = worker(Microcrawler.Coordinator, [[], [config: config, name: Coordinator]])
         collector = worker(Microcrawler.Collector, [[], [config: config, name: Collector]])
+        amqp_websocket_bridge = worker(Microcrawler.AmqpWebsocketBridge, [[], [config: config, name: AmqpWebsocketBridge]])
         children = [
             coordinator,
-            collector
+            collector,
+            amqp_websocket_bridge
         ]
 
 #        amqp_uri = config["amqp"]["uri"]
