@@ -14,6 +14,9 @@ defmodule Microcrawler.Supervisor.Event do
         # Construct config file path
         config_path = Path.join([System.user_home(), '.microcrawler', 'config.json'])
 
+        # Inform user that we are trying to load config file (config.json)
+        Logger.info("Loading config file '#{config_path}'")
+
         # Try to read config file
         res = case File.read(config_path) do
             # Return parsed file
