@@ -31,6 +31,14 @@ defmodule Microcrawler.EventSupervisor do
 #            worker(Microcrawler.Client.Elasticsearch, [])
 #        ]
 
+#        config_path = Path.join([System.user_home(), '.microcrawler', 'config.json'])
+#        res = case File.read(config_path) do
+#            {:ok, body}      -> run(parse_config(body))
+#            {:error, reason} -> Apex.ap reason
+#        end
+#
+#        config = Poison.Parser.parse!(data)
+
         coordinator = worker(Microcrawler.Coordinator, [[], [name: Coordinator]])
         collector = worker(Microcrawler.Collector, [[coordinator], [name: Collector]])
         children = [
@@ -38,14 +46,6 @@ defmodule Microcrawler.EventSupervisor do
             collector
         ]
 
-#        config_path = Path.join([System.user_home(), '.microcrawler', 'config.json'])
-#        res = case File.read(config_path) do
-#            {:ok, body}      -> run(parse_config(body))
-#            {:error, reason} -> Apex.ap reason
-#        end
-#
-#        Poison.Parser.parse!(data)
-#
 #        amqp_uri = config["amqp"]["uri"]
 #
 #        # Connect to AMQP
