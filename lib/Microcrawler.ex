@@ -1,39 +1,37 @@
+# Inspired by http://pedroassumpcao.ghost.io/creating-a-supervision-tree-for-elixir-genevent-behavior/
+
 defmodule Microcrawler do
   use Application
 
   def start(_type, _args) do
-    # res = Execjs.eval "'red yellow blue'.split(' ')"
-    # Apex.ap res
+    import Supervisor.Spec, warn: false
 
-    # Read config file
-    config_path = Path.join([System.user_home(), '.microcrawler', 'config.json'])
-    res = case File.read(config_path) do
-      {:ok, body}      -> run(parse_config(body))
-      {:error, reason} -> Apex.ap reason
-    end
-    res
-  end
+    children = [
+      supervisor(Microcrawler.EventSupervisor, [])
+    ]
 
-  def parse_config(data) do
-    Poison.Parser.parse!(data)
-  end
-
-  def run(config) do
-    amqp_uri = config["amqp"]["uri"]
-
-    # Connect to AMQP
-    {:ok, conn} = AMQP.Connection.open(amqp_uri)
-    {:ok, chan} = AMQP.Channel.open(conn)
-
-    handler = fn(payload, _meta) ->
-        IO.puts("Received: #{payload}")
-    end
-
-    IO.puts "Starting AMQP"
-    Task.start(fn -> AMQP.Queue.subscribe(chan, "collector", handler) end)
-
-    receive do
-    _ -> :ok
-    end
+    opts = [strategy: :one_for_one, name: Microcrawler.Supervisor]
+    Supervisor.start_link(children, opts)
   end
 end
+
+defmodule Microcrawler.EventSupervisor do
+  use Supervisor
+
+  @server __MODULE__
+
+  def start_link do
+    Supervisor.start_link(@server, :ok, [name: @server])
+  end
+
+  def init(:ok) do
+    children = [
+      worker(Microcrawler.AmqpClient, []),
+      worker(Microcrawler.CouchbaseClient, []),
+      worker(Microcrawler.ElasticsearchClient, [])
+    ]
+
+    supervise(children, strategy: :one_for_one)
+  end
+end
+

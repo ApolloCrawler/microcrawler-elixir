@@ -33,6 +33,7 @@ defmodule Microcrawler.Mixfile do
       {:apex, "~>0.5.2"},
       {:cberl, git: "https://github.com/chitika/cberl", override: true},
       {:dialyxir, "~> 0.3.5", only: [:dev]},
+      {:distillery, "~> 0.9"},
       {:execjs, "~> 1.1.3"},
       {:poison, "~> 1.5"},
       {:tirexs, "~> 0.8.8"}
