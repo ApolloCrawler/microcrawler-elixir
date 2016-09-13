@@ -1,8 +1,10 @@
 defmodule Microcrawler.CouchbaseClient do
+    require Logger
+
     @server __MODULE__
 
     def start_link do
-        IO.puts 'Starting Couchbase Client'
+        Logger.info('Starting Couchbase Client')
 
         GenEvent.start_link [{:name, @server}]
     end

@@ -28,3 +28,14 @@ use Mix.Config
 # here (which is why it is important to import them last).
 #
 #     import_config "#{Mix.env}.exs"
+
+# See http://elixir-lang.org/docs/stable/logger/Logger.html
+config :logger,
+    backends: [:console, {LoggerFileBackend, :debug}],
+    compile_time_purge_level: :debug,
+    handle_otp_reports: false,
+    handle_sasl_reports: false
+
+config :logger, :debug,
+    path: "logs/debug.log",
+    level: :debug

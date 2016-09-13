@@ -35,6 +35,7 @@ defmodule Microcrawler.Mixfile do
       {:dialyxir, "~> 0.3.5", only: [:dev]},
       {:distillery, "~> 0.9"},
       {:execjs, "~> 1.1.3"},
+      {:logger_file_backend, "~> 0.0.8"},
       {:poison, "~> 1.5"},
       {:tirexs, "~> 0.8.8"}
     ]
