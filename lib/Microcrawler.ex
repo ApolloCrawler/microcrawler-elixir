@@ -25,20 +25,14 @@ defmodule Microcrawler.EventSupervisor do
     end
 
     def init(:ok) do
-#        children = [
-#            worker(Microcrawler.Client.Amqp, []),
-#            worker(Microcrawler.Client.Couchbase, []),
-#            worker(Microcrawler.Client.Elasticsearch, [])
-#        ]
+        config_path = Path.join([System.user_home(), '.microcrawler', 'config.json'])
+        config = case File.read(config_path) do
+            {:ok, body}      -> Poison.Parser.parse!(body)
+            {:error, reason} -> Apex.ap reason
+        end
 
-#        config_path = Path.join([System.user_home(), '.microcrawler', 'config.json'])
-#        res = case File.read(config_path) do
-#            {:ok, body}      -> Poison.Parser.parse!(data)
-#            {:error, reason} -> Apex.ap reason
-#        end
-
-        coordinator = worker(Microcrawler.Coordinator, [[], [name: Coordinator]])
-        collector = worker(Microcrawler.Collector, [[coordinator], [name: Collector]])
+        coordinator = worker(Microcrawler.Coordinator, [[config: config], [name: Coordinator]])
+        collector = worker(Microcrawler.Collector, [[config: config, coordinator: coordinator], [name: Collector]])
         children = [
             coordinator,
             collector
