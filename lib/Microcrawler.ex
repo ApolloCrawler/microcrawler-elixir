@@ -4,6 +4,8 @@ defmodule Microcrawler do
     use Application
 
     def start(_type, _args) do
+        Logger.info("Starting #{__MODULE__}")
+
         import Supervisor.Spec, warn: false
 
         children = [
