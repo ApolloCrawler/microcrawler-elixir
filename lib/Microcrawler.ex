@@ -13,7 +13,7 @@ defmodule Microcrawler do
             supervisor(Microcrawler.Supervisor.Event, [])
         ]
 
-        opts = [strategy: :one_for_one, name: Microcrawler.Supervisor]
+        opts = [strategy: :one_for_one, name: __MODULE__]
         Supervisor.start_link(children, opts)
     end
 end
