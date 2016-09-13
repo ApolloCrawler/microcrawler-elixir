@@ -4,7 +4,7 @@ defmodule Microcrawler.Supervisor.Coordinator do
 
     @server __MODULE__
 
-    def start_link(_args) do
+    def start_link(_args \\ nil) do
         Logger.info("Starting #{__MODULE__}")
 
         Supervisor.start_link(@server, :ok, [name: @server])
