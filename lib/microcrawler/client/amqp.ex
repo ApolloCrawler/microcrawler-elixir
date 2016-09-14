@@ -3,7 +3,7 @@ defmodule Microcrawler.Client.Amqp do
 
     @server __MODULE__
 
-    def start_link() do
+    def start_link(_args \\ nil) do
         Logger.info("Starting #{__MODULE__}")
 
 #        amqp_uri = config["amqp"]["uri"]
@@ -16,7 +16,8 @@ defmodule Microcrawler.Client.Amqp do
 #                IO.puts("Received: #{payload}")
 #        end
 
-        GenEvent.start_link [{:name, @server}]
+        # GenEvent.start_link [{:name, @server}]
+        GenEvent.start_link []
     end
 
     # code omitted

@@ -12,8 +12,10 @@ defmodule Microcrawler.Supervisor.Coordinator do
 
     def init(:ok) do
         coordinator = worker(Microcrawler.Worker.Coordinator, [[], [name: Microcrawler.Worker.Coordinator]])
-        amqp = worker(Microcrawler.Client.Amqp, [])
-        couchbase = worker(Microcrawler.Client.Couchbase, [])
+
+        # Pass Coordinator's PID to clients
+        amqp = worker(Microcrawler.Client.Amqp, [coordinator])
+        couchbase = worker(Microcrawler.Client.Couchbase, [coordinator])
 
         children = [
             coordinator,

@@ -13,8 +13,16 @@ defmodule Microcrawler.Supervisor.Collector do
     def init(:ok) do
         collector = worker(Microcrawler.Worker.Collector, [[], [name: Microcrawler.Worker.Collector]])
 
+        # Pass Collector's PID to clients
+        amqp = worker(Microcrawler.Client.Amqp, [collector])
+        couchbase = worker(Microcrawler.Client.Couchbase, [collector])
+        elasticsearch = worker(Microcrawler.Client.Elasticsearch, [collector])
+
         children = [
-            collector
+            collector,
+            amqp,
+            couchbase,
+            elasticsearch
         ]
 
         supervise(children, strategy: :one_for_one)
