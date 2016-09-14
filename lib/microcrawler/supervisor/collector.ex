@@ -11,12 +11,14 @@ defmodule Microcrawler.Supervisor.Collector do
     end
 
     def init(:ok) do
-        collector = worker(Microcrawler.Worker.Collector, [[], [name: Microcrawler.Worker.Collector]])
+        couchbase = worker(Microcrawler.Client.Couchbase, [])
+        elasticsearch = worker(Microcrawler.Client.Elasticsearch, [])
+
+        # Pass Couchbase's and Elasticsearch's PIDs to Collector
+        collector = worker(Microcrawler.Worker.Collector, [[couchbase, elasticsearch], [name: Microcrawler.Worker.Collector]])
 
         # Pass Collector's PID to clients
         amqp = worker(Microcrawler.Client.Amqp, [collector])
-        couchbase = worker(Microcrawler.Client.Couchbase, [collector])
-        elasticsearch = worker(Microcrawler.Client.Elasticsearch, [collector])
 
         children = [
             collector,
