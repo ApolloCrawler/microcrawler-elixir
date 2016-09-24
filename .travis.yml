@@ -20,6 +20,7 @@ addons:
       - ubuntu-toolchain-r-test
     packages:
       - g++-4.8
+      - graphviz
 
 before_script:
   - "sleep 10"
@@ -32,3 +33,5 @@ install:
   - mix local.hex --force
   - mix deps.get
   - mix deps.compile
+  - mix deps.tree --format dot
+  - dot -Tpng deps_tree.dot -o deps_tree.png
