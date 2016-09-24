@@ -38,6 +38,8 @@ defmodule Microcrawler.Mixfile do
       {:distillery, "~> 0.9"},
       {:ex_doc, "~> 0.13.1", only: :dev},
       {:execjs, "~> 1.1.3"},
+      {:floki, "~> 0.10.1"},
+      {:httpoison, "~> 0.9.0"},
       {:logger_file_backend, "~> 0.0.8"},
       {:phoenix, "~> 1.2.1"},
       {:poison, "~> 1.5"},
