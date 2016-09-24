@@ -13,8 +13,14 @@ defmodule Microcrawler.Supervisor.AmqpWebsocketBridge do
     def init(:ok) do
         amqp_websocket_bridge = worker(Microcrawler.Worker.AmqpWebsocketBridge, [[], [name: Microcrawler.Worker.AmqpWebsocketBridge]])
 
+        # Pass AmqpWebsocketBridge's PID to clients
+        amqp = worker(Microcrawler.Client.Amqp, [amqp_websocket_bridge])
+        couchbase = worker(Microcrawler.Client.Couchbase, [amqp_websocket_bridge])
+
         children = [
-            amqp_websocket_bridge
+            amqp_websocket_bridge,
+            amqp,
+            couchbase
         ]
 
         supervise(children, strategy: :one_for_one)
