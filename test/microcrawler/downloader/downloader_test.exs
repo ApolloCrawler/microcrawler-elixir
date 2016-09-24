@@ -5,12 +5,12 @@ defmodule MicrocrawlerTest.Downloader do
     @invalid_url "https://invalid.url"
 
     test "Get valid URL - #{@valid_url}" do
-        HTTPoison.get!(@valid_url)
+        Microcrawler.Downloader.get!(@valid_url)
     end
 
     test "Get invalid URL - #{@invalid_url}" do
         assert_raise HTTPoison.Error, fn ->
-            HTTPoison.get!(@invalid_url)
+            Microcrawler.Downloader.get!(@invalid_url)
         end
     end
 end
