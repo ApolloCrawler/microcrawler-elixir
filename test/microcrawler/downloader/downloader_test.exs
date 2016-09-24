@@ -15,7 +15,7 @@ defmodule MicrocrawlerTest.Downloader do
         end
     end
 
-    test "Parse Title" do
+    test "Parse Title of #{@xkcd_url}" do
         res = Microcrawler.Downloader.get!(@xkcd_url)
         assert(res.status_code == 200)
 
