@@ -3,6 +3,7 @@ defmodule MicrocrawlerTest.Downloader do
 
     @valid_url "https://google.com"
     @invalid_url "https://invalid.url"
+    @xkcd_url "http://xkcd.com/"
 
     test "Get valid URL - #{@valid_url}" do
         Microcrawler.Downloader.get!(@valid_url)
@@ -12,5 +13,13 @@ defmodule MicrocrawlerTest.Downloader do
         assert_raise HTTPoison.Error, fn ->
             Microcrawler.Downloader.get!(@invalid_url)
         end
+    end
+
+    test "Parse Title" do
+        res = Microcrawler.Downloader.get!(@xkcd_url)
+        assert(res.status_code == 200)
+
+        [{"title", [], [title]}] = Floki.find(res.body, "title")
+        assert(title)
     end
 end
