@@ -16,7 +16,7 @@ defmodule MicrocrawlerTest.Downloader do
     end
 
     test "Parse Title of #{@xkcd_url}" do
-        res = Microcrawler.Downloader.get!(@xkcd_url)
+        {:ok, res} = Microcrawler.Downloader.get(@xkcd_url)
         assert(res.status_code == 200)
 
         [{"title", [], [title]}] = Floki.find(res.body, "head > title")
